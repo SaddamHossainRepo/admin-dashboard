@@ -23,12 +23,13 @@ import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function LoginView() {
+export default function RegisterView() {
   const theme = useTheme();
 
   // const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const history = useNavigate();
@@ -42,9 +43,9 @@ export default function LoginView() {
 
   const handleClick = async (e) => {
     e.preventDefault();
-    const response = await fetch('http://localhost:9000/v1/auth/login', {
+    const response = await fetch('http://localhost:9000/v1/auth/register', {
       method: 'POST',
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ name, email, password }),
       headers: {
         'Content-Type': 'application/json'
       }
@@ -52,14 +53,15 @@ export default function LoginView() {
     const result = await response.json();
     console.log(result);
     localStorage.setItem("user-info", JSON.stringify(result))
-    history('/')
-    console.log(email, password)
+    history('/products')
+    console.log('user registered', email, password)
     // router.push('/dashboard');
   };
 
   const renderForm = (
     <>
       <Stack spacing={3}>
+        <TextField name="name" label="Your Name" onChange={(e) => setName(e.target.value)} />
         <TextField name="email" label="Email address" onChange={(e) => setEmail(e.target.value)} />
 
         <TextField
@@ -79,11 +81,12 @@ export default function LoginView() {
         />
       </Stack>
 
-      <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
+      {/* <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
         <Link variant="subtitle2" underline="hover">
           Forgot password?
         </Link>
-      </Stack>
+      </Stack> */}
+      <br />
 
       <LoadingButton
         fullWidth
@@ -93,7 +96,7 @@ export default function LoginView() {
         color="inherit"
         onClick={handleClick}
       >
-        Login
+        Register
       </LoadingButton>
     </>
   );
@@ -125,14 +128,14 @@ export default function LoginView() {
             maxWidth: 420,
           }}
         >
-          <Typography variant="h4">Sign in to Blackboij</Typography>
+          <Typography variant="h4">Register in to Blackboij</Typography>
 
-          <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
+          {/* <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
             Don’t have an account?
             <Link variant="subtitle2" sx={{ ml: 0.5 }}>
               Get started
             </Link>
-          </Typography>
+          </Typography> */}
 
           {/* <Stack direction="row" spacing={2}>
             <Button

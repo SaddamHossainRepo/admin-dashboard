@@ -1,6 +1,8 @@
 import { useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
+import { Button } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import Popover from '@mui/material/Popover';
@@ -32,13 +34,16 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
+  const history = useNavigate();
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
 
   const handleClose = () => {
-    setOpen(null);
+    localStorage.removeItem('user-info');
+    Navigate('/login')
+    // setOpen(null);
   };
 
   return (
@@ -108,7 +113,7 @@ export default function AccountPopover() {
           onClick={handleClose}
           sx={{ typography: 'body2', color: 'error.main', py: 1.5 }}
         >
-          Logout
+          <Button>Logout</Button>
         </MenuItem>
       </Popover>
     </>

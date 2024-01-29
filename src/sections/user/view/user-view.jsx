@@ -95,7 +95,7 @@ export default function UserPage() {
   const notFound = !dataFiltered.length && !!filterName;
 
   const getAllUsers = async () => {
-    const response = await fetch('http://localhost:9000/products/1')
+    const response = await fetch('http://localhost:9000/users/1')
     const allUsers = response.json();
     console.log(allUsers);
     return allUsers;
