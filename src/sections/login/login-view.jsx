@@ -129,8 +129,8 @@ export default function LoginView() {
 
           <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
             Don’t have an account?
-            <Link variant="subtitle2" sx={{ ml: 0.5 }}>
-              Get started
+            <Link to='register' variant="subtitle2" sx={{ ml: 0.5 }}>
+              Register
             </Link>
           </Typography>
 
