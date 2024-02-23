@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState , useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -103,10 +103,9 @@ export default function UserPage() {
     });
   }, []);
   console.log(products);
+  
 
   const notFound = !dataFiltered.length && !!filterName;
-
-  
 
   return (
     <Container>
@@ -116,6 +115,9 @@ export default function UserPage() {
         <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
           New User
         </Button>
+        {
+    products.map((product) =>console.log(`${product.price}`))
+  }
       </Stack>
 
       <Card>
@@ -145,21 +147,19 @@ export default function UserPage() {
                 ]}
               />
               <TableBody>
-                {products
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => (
-                    <UserTableRow
-                      key={row.id}
-                      name={row.name}
-                      price={row.price}
-                      status={row.status}
-                      company={row.company}
-                      avatarUrl={row.avatarUrl}
-                      isVerified={row.isVerified}
-                      selected={selected.indexOf(row.name) !== -1}
-                      handleClick={(event) => handleClick(event, row.name)}
-                    />
-                  ))}
+                {products.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                  <UserTableRow
+                    key={row.id}
+                    name={row.name}
+                    price={row.price}
+                    status={row.status}
+                    company={row.company}
+                    avatarUrl={row.avatarUrl}
+                    isVerified={row.isVerified}
+                    selected={selected.indexOf(row.name) !== -1}
+                    handleClick={(event) => handleClick(event, row.name)}
+                  />
+                ))}
 
                 <TableEmptyRows
                   height={77}

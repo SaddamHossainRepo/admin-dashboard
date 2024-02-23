@@ -1,8 +1,10 @@
+import Swal from 'sweetalert2'
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
+import { Link, Route, useNavigate, BrowserRouter as Router } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
+// import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -25,6 +27,7 @@ import Iconify from 'src/components/iconify';
 
 export default function RegisterView() {
   const theme = useTheme();
+  
 
   // const router = useRouter();
 
@@ -34,29 +37,51 @@ export default function RegisterView() {
   const [password, setPassword] = useState();
   const history = useNavigate();
 
-  useEffect(() => {
-    if (localStorage.getItem('user-info')) {
-      history('/')
-    }
-  }, [history])
-
-
-  const handleClick = async (e) => {
-    e.preventDefault();
+  const handleRegister = async () => {
+    // eslint-disable-next-line prefer-const
+    let item = { name, email, password };
+    console.log(item);
     const response = await fetch('http://localhost:9000/v1/auth/register', {
       method: 'POST',
-      body: JSON.stringify({ name, email, password }),
+      body: JSON.stringify(item),
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     });
     const result = await response.json();
-    console.log(result);
-    localStorage.setItem("user-info", JSON.stringify(result))
-    history('/products')
-    console.log('user registered', email, password)
-    // router.push('/dashboard');
+    if (!result.tokens) {
+      Swal.fire(result.message);
+    } else {
+      localStorage.setItem('user-info', JSON.stringify(result));
+      Swal.fire('user created successfully');
+      history('/products');
+      console.log(result);
+    }
   };
+
+  // useEffect(() => {
+  //   if (localStorage.getItem('user-info')) {
+  //     history('/');
+  //   }
+  // }, [history]);
+
+  // const handleClick = async (e) => {
+  //   e.preventDefault();
+  //   const response = await fetch('http://localhost:9000/v1/auth/register', {
+  //     method: 'POST',
+  //     body: JSON.stringify({ name, email, password }),
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   });
+  //   const result = await response.json();
+  //   console.log(result);
+  //   localStorage.setItem('user-info', JSON.stringify(result));
+  //   history('/products');
+  //   console.log('user registered', email, password);
+  //   notify();
+  //   // router.push('/dashboard');
+  // };
 
   const renderForm = (
     <>
@@ -91,10 +116,10 @@ export default function RegisterView() {
       <LoadingButton
         fullWidth
         size="large"
-        type="submit"
+        type="submit" 
         variant="contained"
         color="inherit"
-        onClick={handleClick}
+        onClick={handleRegister}
       >
         Register
       </LoadingButton>
@@ -129,6 +154,13 @@ export default function RegisterView() {
           }}
         >
           <Typography variant="h4">Register in to Blackboij</Typography>
+
+          <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
+            Already have an account?
+            <Link to="/login" variant="subtitle2" sx={{ ml: 0.5 }}>
+              Login
+            </Link>
+          </Typography>
 
           {/* <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
             Don’t have an account?

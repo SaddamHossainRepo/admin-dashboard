@@ -42,9 +42,17 @@ export default function AccountPopover() {
 
   const handleClose = () => {
     localStorage.removeItem('user-info');
-    Navigate('/login')
     // setOpen(null);
+    // history('/products')
+    setOpen(null);
   };
+
+  const handleLogout = () =>{
+    localStorage.removeItem('user-info');
+    console.log('logged out');
+    history('/login');
+    // setIsLoggedin(false);
+}
 
   return (
     <>
@@ -113,7 +121,7 @@ export default function AccountPopover() {
           onClick={handleClose}
           sx={{ typography: 'body2', color: 'error.main', py: 1.5 }}
         >
-          <Button>Logout</Button>
+          <Button onClick={handleLogout}>Logout</Button>
         </MenuItem>
       </Popover>
     </>

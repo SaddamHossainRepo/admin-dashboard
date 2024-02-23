@@ -39,6 +39,10 @@ export default function Router() {
       element: <RegisterPage />,
     },
     {
+      path: 'register',
+      element: <RegisterPage />,
+    },
+    {
       path: '404',
       element: <Page404 />,
     },

@@ -1,8 +1,10 @@
+import Swal from 'sweetalert2';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+// import {  } from 'react-router-dom';
+import { Link, Route, useNavigate, BrowserRouter as Router } from 'react-router-dom';
 
 import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
+// import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -31,14 +33,14 @@ export default function LoginView() {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [isLoggedin, setIsLoggedin] = useState(false);
   const history = useNavigate();
 
-  useEffect(() => {
-    if (localStorage.getItem('user-info')) {
-      history('/')
-    }
-  }, [history])
-
+  // useEffect(() => {
+  //   if (localStorage.getItem('user-info')) {
+  //     history('/');
+  //   }
+  // }, [history]);
 
   const handleClick = async (e) => {
     e.preventDefault();
@@ -46,14 +48,21 @@ export default function LoginView() {
       method: 'POST',
       body: JSON.stringify({ email, password }),
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     });
     const result = await response.json();
-    console.log(result);
-    localStorage.setItem("user-info", JSON.stringify(result))
-    history('/')
-    console.log(email, password)
+    console.log('result', result);
+    if (!result.token) {
+      Swal.fire(result.message);
+    } else {
+      localStorage.setItem('user-info', JSON.stringify(result));
+      setIsLoggedin(true);
+      history('/');
+      Swal.fire('Successfully logged in');
+      console.log('Successfully logged in', email, password);
+    }
+
     // router.push('/dashboard');
   };
 
@@ -125,11 +134,13 @@ export default function LoginView() {
             maxWidth: 420,
           }}
         >
-          <Typography variant="h4">Sign in to Blackboij</Typography>
+          <Typography className="mr-5" variant="h4">
+            Sign in to Blackboij
+          </Typography>
 
           <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
-            Don’t have an account?
-            <Link to='register' variant="subtitle2" sx={{ ml: 0.5 }}>
+            Do not have an account?
+            <Link to="/register" variant="subtitle2" sx={{ ml: 5 }}>
               Register
             </Link>
           </Typography>
